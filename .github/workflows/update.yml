@@ -1,0 +1,24 @@
+name: Update RU IP List
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # Каждый день в 04:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download ru.zone from ipdeny.com
+        run: |
+          curl -sSL https://www.ipdeny.com/ipblocks/data/countries/ru.zone -o ru.txt
+
+      - name: Commit and push
+        run: |
+          git config --global user.name "update-bot"
+          git config --global user.email "update-bot@users.noreply.github.com"
+          git add ru.txt
+          git commit -m "Auto update ru.txt from ipdeny.com" || echo "No changes"
+          git push
