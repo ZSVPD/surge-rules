@@ -16,7 +16,12 @@ jobs:
       - name: Download and format RU IP list
         run: |
           curl -s https://www.ipdeny.com/ipblocks/data/countries/ru.zone -o ru.zone
-          awk '{print "IP-CIDR," $0}' ru.zone > ru.txt
+
+          # Добавим префикс и уберем лишние символы
+          awk '{print "IP-CIDR," $0}' ru.zone | LC_ALL=C tr -cd '\11\12\15\40-\176' > ru.txt
+
+          # Удалим пустые строки (если есть)
+          sed -i '/^$/d' ru.txt
 
       - name: Commit and push if changed
         run: |
@@ -29,4 +34,3 @@ jobs:
             git push
           else
             echo "No changes in ru.txt"
-          fi
