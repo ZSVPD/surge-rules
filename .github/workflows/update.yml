@@ -18,19 +18,19 @@ jobs:
           curl -s https://www.ipdeny.com/ipblocks/data/countries/ru.zone -o ru.zone
 
           # Добавим префикс и удалим невидимые символы
-          awk '{print "IP-CIDR," $0}' ru.zone | LC_ALL=C tr -cd '\11\12\15\40-\176' > ru_ip.txt
+          awk '{print "IP-CIDR," $0}' ru.zone | LC_ALL=C tr -cd '\11\12\15\40-\176' > ru-ip.txt
 
           # Удалим пустые строки
-          sed -i '/^$/d' ru_ip.txt
+          sed -i '/^$/d' ru-ip.txt
 
       - name: Commit and push if changed
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add ru_ip.txt
+          git add ru-ip.txt
 
           if ! git diff --cached --quiet; then
             git commit -m "Update RU IP List"
             git push
           else
-            echo "No changes in ru_ip.txt"
+            echo "No changes in ru-ip.txt"
