@@ -23,14 +23,15 @@ jobs:
           # Удалим пустые строки
           sed -i '/^$/d' ru-ip.txt
 
-      - name: Commit and push if changed
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add ru-ip.txt
+- name: Commit and push if changed
+  run: |
+    git config --global user.name "github-actions"
+    git config --global user.email "github-actions@github.com"
+    git add ru-ip.txt
 
-          if ! git diff --cached --quiet; then
-            git commit -m "Update RU IP List"
-            git push
-          else
-            echo "No changes in ru-ip.txt"
+    if ! git diff --cached --quiet; then
+      git commit -m "Update RU IP List"
+      git push
+    else
+      echo "No changes in ru-ip.txt"
+    fi
